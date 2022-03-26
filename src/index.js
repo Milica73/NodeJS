@@ -1,35 +1,45 @@
 global.contract = require("./contractDef");
+const common = require("./common");
 const express = require("express");
-const moment = require("moment");
 const app = express();
 app.use(express.json());
 
 app.get("/sportEvent", async (req, res) => {
-  var matches = await global.contract.contract.methods.getMatches().call();
-  var list_of_data = [];
-  for (let i = 0; i < matches.length; i++) {
-    var match = matches[i];
-    let match_date = moment(parseInt(match[6]))
-      .format("MMMM Do, YYYY")
-      .replace("th", "");
+  let options = {
+    filter: {
+      value: [],
+    },
+    fromBlock: 0,
+    toBlock: "latest",
+  };
+  var t = await global.contract.contract
+    .getPastEvents("MatchInfo", options)
+    .then((results) => {
+      var list_of_data = [];
+      for (let i = 0; i < results.length; i++) {
+        var match = results[i].returnValues;
+        var date = new Date(parseInt(match["_gameDay"]) * 1000);
+        let match_date =
+          common.months[date.getMonth()] +
+          " " +
+          date.getDate() +
+          ", " +
+          date.getFullYear();
 
-    var data = {
-      matchesId: i.toString(),
-      competition: match[0],
-      teamA: match[1],
-      teamB: match[2],
-      Tie: match[3],
-      Team_A_Win: match[4],
-      Team_B_Win: match[5],
-      gameDay: match_date,
-    };
-    list_of_data.push(data);
-  }
-
-  var result = JSON.stringify(list_of_data, null, "\t");
-  console.log(result);
-
-  res.send(result);
+        var data = {
+          matchesId: match["_matchId"],
+          competition: match["_competition"],
+          teamA: match["_teamA"],
+          teamB: match["_teamB"],
+          Tie: match["_tie"],
+          Team_A_Win: match["_team_A_win"],
+          Team_B_Win: match["_team_B_win"],
+          gameDay: match_date,
+        };
+        list_of_data.push(data);
+      }
+      res.send(list_of_data);
+    });
 });
 
 app.listen(8081, () => {
