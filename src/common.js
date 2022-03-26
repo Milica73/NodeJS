@@ -41,6 +41,61 @@ var ABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: "uint256",
+        name: "_matchId",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "_competition",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "_teamA",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "_teamB",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_tie",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_team_A_win",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_team_B_win",
+        type: "uint256",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "_gameDay",
+        type: "uint256",
+      },
+    ],
+    name: "MatchInfo",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: "address",
         name: "_from",
@@ -147,33 +202,6 @@ var ABI = [
   },
   {
     inputs: [],
-    name: "getMatches",
-    outputs: [
-      {
-        components: [
-          { internalType: "string", name: "competition", type: "string" },
-          { internalType: "string", name: "teamA", type: "string" },
-          { internalType: "string", name: "teamB", type: "string" },
-          { internalType: "uint256", name: "tie", type: "uint256" },
-          { internalType: "uint256", name: "team_A_win", type: "uint256" },
-          { internalType: "uint256", name: "team_B_win", type: "uint256" },
-          { internalType: "uint256", name: "gameDay", type: "uint256" },
-          {
-            internalType: "uint256",
-            name: "bettingPersonCount",
-            type: "uint256",
-          },
-        ],
-        internalType: "struct Betting.MatchDetails[]",
-        name: "",
-        type: "tuple[]",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "matchCount",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
@@ -251,8 +279,25 @@ var ABI = [
   { stateMutability: "payable", type: "receive" },
 ];
 
-var ADDRESS = "0xd7FfbCe596DfA3aA67298cB76Cb58CCf56eA57ef";
+var ADDRESS = "0xe0c5fe3afEd0120cef31F877988DD89d8406EBCf";
+
+var MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+
 module.exports = {
   address: ADDRESS,
   abi: ABI,
+  months: MONTHS,
 };
